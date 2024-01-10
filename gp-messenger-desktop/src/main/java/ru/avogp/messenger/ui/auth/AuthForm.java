@@ -1,7 +1,12 @@
 package ru.avogp.messenger.ui.auth;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Map;
-import java.util.function.Consumer;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,53 +14,58 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.avogp.messenger.ui.auth.AuthService.User;
 
 public class AuthForm extends JPanel {
   private JTextField usernameField;
   private JPasswordField passwordField;
 
-  // UI callbacks
+  // UI configuration
+  private int fieldCounter = 0;
+  private final GridBagConstraints gbc = new GridBagConstraints();
+
   private final Logger logger = LogManager.getLogger(AuthForm.class);
 
+  private void decorateField(JLabel label, JTextField field) {
+    label.setSize(new Dimension(400, 60));
+    gbc.gridx = 0;
+    gbc.weightx = 100;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(4, 4, 4, 4);
+
+    gbc.gridy = fieldCounter;
+    fieldCounter += 1;
+    gbc.weighty = 0.8;
+    add(label, gbc);
+
+    gbc.gridy = fieldCounter;
+    fieldCounter += 1;
+    gbc.weighty = 1.6;
+    add(field, gbc);
+
+    gbc.gridy = fieldCounter;
+  }
+
   public AuthForm(Map<Event, Runnable> callbacks, AuthService service) {
-    JLabel userLabel = new JLabel("Имя пользователя:");
-    userLabel.setBounds(10, 20, 120, 25);
-    add(userLabel);
+    super();
+    setSize(new Dimension(600, 600));
+    setBorder(BorderFactory.createLineBorder(Color.WHITE));
+    setLayout(new GridBagLayout());
 
-    usernameField = new JTextField(20);
-    usernameField.setBounds(140, 20, 140, 25);
-    add(usernameField);
-
-    JLabel passwordLabel = new JLabel("Пароль:");
-    passwordLabel.setBounds(10, 50, 120, 25);
-    add(passwordLabel);
-
-    passwordField = new JPasswordField(20);
-    passwordField.setBounds(140, 50, 140, 25);
-    add(passwordField);
+    decorateField(new JLabel("Username"), new JTextField(20));
+    decorateField(new JLabel("Password"), new JPasswordField(20));
 
     JButton loginButton = new JButton("Войти");
-    loginButton.setBounds(100, 90, 100, 25);
-    add(loginButton);
+    loginButton.setMargin(new Insets(4, 4, 4, 4));
+    loginButton.setMaximumSize(new Dimension(
+        Integer.MAX_VALUE, loginButton.getPreferredSize().height));
+    gbc.weighty += 1;
+    add(loginButton, gbc);
 
     loginButton.addActionListener(e -> {
-      Map<String, String> user = Map.of("username", usernameField.getText(), "password",
+      User user = new User(usernameField.getText(),
           new String(passwordField.getPassword()));
-
-      // Здесь можете добавить проверку имени пользователя и пароля
-      // Например, можно сравнивать с предопределенными значениями
       service.onAuth(user);
-      // callback(Event.ON_AUTH);
-      //
-      // if (username.equals("admin") && password.equals("12345")) {
-      // // JOptionPane.showMessageDialog(null, "Вход выполнен успешно!");
-      // callback(Event.ON_AUTH_SUCCESS);
-      // } else {
-      // JOptionPane.showMessageDialog(
-      // null,
-      // "Ошибка входа. Пожалуйста, проверьте имя пользователя и
-      // пароль.");
-      // }
     });
     setVisible(true);
   }

@@ -1,10 +1,21 @@
 package ru.avogp.messenger.ui.auth;
 
-import java.util.Map;
 import ru.avogp.messenger.Service;
 
 public interface AuthService extends Service {
-  public void onAuth(Map<String, String> user);
+  class User {
+    final String username;
+    final String password;
+
+    public User(String username, String password) {
+      this.username = username;
+      this.password = password;
+    }
+  }
+
+  public void onRegister(User user);
+
+  public void onAuth(User user);
 
   public void onAuthSuccess();
 

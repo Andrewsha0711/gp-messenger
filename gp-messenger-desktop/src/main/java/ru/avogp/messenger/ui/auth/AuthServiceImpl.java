@@ -1,13 +1,12 @@
 package ru.avogp.messenger.ui.auth;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.SubmissionPublisher;
 import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.avogp.messenger.Service;
-import ru.avogp.messenger.ServiceSubscriber;
 
 public class AuthServiceImpl implements AuthService {
   private final Logger logger;
@@ -21,9 +20,7 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void onAuth(Map<String, String> user) {
-    logger.info("ONAUTH");
-    logger.info(publisher.getSubscribers().size());
+  public void onAuth(User user) {
     publisher.submit(user.toString());
   }
 
@@ -40,12 +37,17 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void subscribe(ServiceSubscriber<Serializable> subscriber) {
+  public void subscribe(Subscriber<Serializable> subscriber) {
     publisher.subscribe(subscriber);
   }
 
   @Override
   public void register(Consumer<Service> register) {
     register.accept(this);
+  }
+
+  @Override
+  public void onRegister(User user) {
+    publisher.submit(user.toString());
   }
 }

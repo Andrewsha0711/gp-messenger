@@ -16,7 +16,7 @@ public class App {
     private static final Device device = new Device();
     private static final Config conf = new Config();
 
-    private ClientSocket socket;
+    private Endpoint endpoint;
     private List<Service> services = new ArrayList<>();
 
     private final Logger logger;
@@ -40,19 +40,18 @@ public class App {
     }
 
     private void bindServicesToSocket() {
-        services.forEach(s -> socket.addPublisher(s));
+        services.forEach(s -> endpoint.listen(s));
     }
 
     private void setupSocket() {
-        String dest = "ws://localhost:8080/chat";
-        socket = new ClientSocket();
-        logger.info("reg services:" + services.size());
-        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
         try {
-            container.connectToServer(socket, new URI(dest));
+            String dest = "ws://localhost:8080/chat";
+            endpoint = new Endpoint();
+            logger.info("reg services:" + services.size());
+            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+            container.connectToServer(endpoint, new URI(dest));
         } catch (DeploymentException e) {
             logger.error("Service unavailable");
-            socket = null;
         } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
