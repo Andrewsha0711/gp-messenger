@@ -9,8 +9,8 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.ServerEndpoint;
 import java.nio.ByteBuffer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ServerEndpoint(value = "/chat", configurator = ChatEndpointConfigurator.class)
 public class ChatEndpoint {
@@ -22,7 +22,7 @@ public class ChatEndpoint {
   public void onOpen(final Session session) {
     // this.session = session;
     mapper = new ObjectMapper();
-    logger = LogManager.getLogger("session:" + session.getId());
+    logger = LoggerFactory.getLogger("session:" + session.getId());
     logger.info("session " + session.getId() + " opened");
     session.getAsyncRemote().sendText("Opened");
   }

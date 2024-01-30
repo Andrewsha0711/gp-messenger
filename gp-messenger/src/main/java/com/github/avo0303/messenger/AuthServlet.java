@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.StringTokenizer;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.http.HttpHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet(urlPatterns = { "auth", "reg" })
 public class AuthServlet extends HttpServlet {
-  private final Logger logger = LogManager.getLogger(AuthServlet.class);
+  private final Logger logger = LoggerFactory.getLogger(AuthServlet.class);
   private final AuthService service = new AuthServiceImpl();
   private final ObjectMapper mapper = new ObjectMapper();
 

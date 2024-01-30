@@ -5,12 +5,12 @@ import jakarta.websocket.server.HandshakeRequest;
 import jakarta.websocket.server.ServerEndpointConfig;
 import jakarta.websocket.server.ServerEndpointConfig.Configurator;
 import java.util.List;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.eclipse.jetty.http.HttpHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChatEndpointConfigurator extends Configurator {
-  private final Logger logger = LogManager.getLogger(ChatEndpointConfigurator.class);
+  private final Logger logger = LoggerFactory.getLogger(ChatEndpointConfigurator.class);
   private final String TOKEN_PROP = "token";
   private final String AUTH_HEADER_TYPE = "Bearer";
 
