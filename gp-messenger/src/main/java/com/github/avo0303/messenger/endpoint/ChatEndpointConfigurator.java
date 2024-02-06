@@ -14,6 +14,15 @@ public class ChatEndpointConfigurator extends Configurator {
   private final String TOKEN_PROP = "token";
   private final String AUTH_HEADER_TYPE = "Bearer";
 
+  class HandshakeException extends Exception {
+    public HandshakeException(String msg) {
+      super(msg);
+    }
+  }
+
+  /**
+   * Only validates, not closing session if bad token
+   */
   @Override
   public void modifyHandshake(ServerEndpointConfig sec,
       HandshakeRequest request,

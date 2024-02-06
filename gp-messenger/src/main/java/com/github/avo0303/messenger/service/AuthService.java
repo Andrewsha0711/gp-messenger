@@ -1,5 +1,6 @@
 package com.github.avo0303.messenger.service;
 
+import com.github.avo0303.messenger.config.Config;
 import com.github.avo0303.messenger.model.User;
 import jakarta.validation.Valid;
 
@@ -14,4 +15,6 @@ public interface AuthService {
   String auth(@Valid User user) throws AuthServiceException;
 
   String register(@Valid User user) throws AuthServiceException;
+
+  Config getConfig();
 }
