@@ -1,10 +1,9 @@
 package com.github.avo0303.messenger.model.impl;
 
+import com.github.avo0303.messenger.model.Token;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
-
-import com.github.avo0303.messenger.model.Token;
 
 public class TokenImpl implements Token {
   private final SecureRandom secureRandom = new SecureRandom(); // threadsafe
