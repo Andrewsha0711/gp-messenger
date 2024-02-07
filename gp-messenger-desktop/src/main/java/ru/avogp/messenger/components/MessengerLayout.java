@@ -1,4 +1,4 @@
-package ru.avogp.messenger.ui;
+package ru.avogp.messenger.components;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

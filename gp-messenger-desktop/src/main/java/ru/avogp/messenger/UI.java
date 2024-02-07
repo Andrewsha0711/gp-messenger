@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.UIManager;
-import ru.avogp.messenger.ui.MainFrame;
+import ru.avogp.messenger.components.MainFrame;
 
 public class UI {
   private final GraphicsConfiguration gc;

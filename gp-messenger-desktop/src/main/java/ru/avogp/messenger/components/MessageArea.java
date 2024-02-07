@@ -1,4 +1,4 @@
-package ru.avogp.messenger.ui;
+package ru.avogp.messenger.components;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -70,8 +70,11 @@ public class MessageArea extends JComponent {
   private void decorateTextArea() {
     textArea.setBounds(getX(), getY(), getWidth(), getHeight());
     textArea.setLineWrap(true);
-    textArea.setBorder(BorderFactory.createLineBorder(
-        new Color(12, 12, 12))); // TODO: Global config
+    extracted(); // TODO: Global config
+  }
+
+  private void extracted() {
+    textArea.setBorder(BorderFactory.createLineBorder(new Color(12, 12, 12)));
   }
 
   private void decorateScroll() {

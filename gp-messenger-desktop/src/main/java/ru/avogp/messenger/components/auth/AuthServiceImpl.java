@@ -1,4 +1,4 @@
-package ru.avogp.messenger.ui.auth;
+package ru.avogp.messenger.components.auth;
 
 import java.io.Serializable;
 import java.util.concurrent.Flow.Subscriber;
@@ -7,11 +7,13 @@ import java.util.function.Consumer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.avogp.messenger.Service;
+import ru.avogp.messenger.components.auth.Auth.Method;
+import ru.avogp.messenger.components.auth.Auth.User;
 
 public class AuthServiceImpl implements AuthService {
   private final Logger logger;
 
-  private SubmissionPublisher<String> publisher = new SubmissionPublisher<>();
+  private SubmissionPublisher<Serializable> publisher = new SubmissionPublisher<>();
   // private ServiceSubscriber<String> subscriber;
 
   public AuthServiceImpl() {
@@ -20,8 +22,8 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void onAuth(User user) {
-    publisher.submit(user.toString());
+  public void onAuth(String username, String password) {
+    publisher.submit(new Auth(Method.AUTH, username, password));
   }
 
   @Override
@@ -47,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
   }
 
   @Override
-  public void onRegister(User user) {
-    publisher.submit(user.toString());
+  public void onRegister(String username, String password) {
+    publisher.submit(new Auth(Method.REGISTER, username, password));
   }
 }

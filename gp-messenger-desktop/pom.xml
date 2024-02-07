@@ -34,7 +34,6 @@
       <version>5.10.1</version>
       <scope>test</scope>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-client-api -->
     <dependency>
       <groupId>javax.websocket</groupId>
@@ -47,21 +46,24 @@
       <artifactId>tyrus-container-jdk-client</artifactId>
       <version>1.8.3</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-api</artifactId>
       <version>3.0.0-beta1</version>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>3.0.0-beta1</version>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.16.1</version>
+    </dependency>
   </dependencies>
 
   <build>

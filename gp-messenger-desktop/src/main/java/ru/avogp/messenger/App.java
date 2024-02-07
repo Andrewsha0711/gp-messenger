@@ -13,48 +13,48 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class App {
-    private static final Device device = new Device();
-    private static final Config conf = new Config();
+  private static final Device device = new Device();
+  private static final Config conf = new Config();
 
-    private Endpoint endpoint;
-    private List<Service> services = new ArrayList<>();
+  private Endpoint endpoint;
+  private List<Service> services = new ArrayList<>();
 
-    private final Logger logger;
+  private final Logger logger;
 
-    public App() {
-        logger = LogManager.getLogger(App.class);
-        setupUI();
-        setupSocket();
-        bindServicesToSocket();
+  public App() {
+    logger = LogManager.getLogger(App.class);
+    setupUI();
+    setupSocket();
+    bindServicesToSocket();
+  }
+
+  public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> {
+      new App();
+    });
+  }
+
+  private void setupUI() {
+    conf.apply();
+    new UI(device.getConfig(), s -> services.add(s));
+  }
+
+  private void bindServicesToSocket() {
+    services.forEach(s -> endpoint.listen(s));
+  }
+
+  private void setupSocket() {
+    try {
+      String dest = "wss://localhost:8080/auth";
+      endpoint = new Endpoint();
+      // logger.info("reg services:" + services.size());
+      WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+      container.connectToServer(endpoint, new URI(dest));
+    } catch (DeploymentException e) {
+      logger.error("Service unavailable");
+    } catch (IOException | URISyntaxException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new App();
-        });
-    }
-
-    private void setupUI() {
-        conf.apply();
-        new UI(device.getConfig(), s -> services.add(s));
-    }
-
-    private void bindServicesToSocket() {
-        services.forEach(s -> endpoint.listen(s));
-    }
-
-    private void setupSocket() {
-        try {
-            String dest = "ws://localhost:8080/chat";
-            endpoint = new Endpoint();
-            logger.info("reg services:" + services.size());
-            WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(endpoint, new URI(dest));
-        } catch (DeploymentException e) {
-            logger.error("Service unavailable");
-        } catch (IOException | URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+  }
 }

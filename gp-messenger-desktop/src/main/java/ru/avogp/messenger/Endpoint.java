@@ -1,7 +1,11 @@
 package ru.avogp.messenger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Flow.Subscriber;
 import java.util.concurrent.SubmissionPublisher;
@@ -13,16 +17,20 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.avogp.messenger.components.auth.AuthService;
 
 @ClientEndpoint
 public class Endpoint {
   private Session session;
   private final Logger logger = LogManager.getLogger(Endpoint.class);
   private final Set<Subscriber<Serializable>> subscribers = new HashSet<>();
-  private final SubmissionPublisher<Serializable> publisher = new SubmissionPublisher<>();
+  private final SubmissionPublisher<Serializable> publisher =
+      new SubmissionPublisher<>();
+  private final ObjectMapper mapper = new ObjectMapper();
 
   public void listen(Service publisher) {
-    Subscriber<Serializable> subscriber = new SubscriberImpl<>(msg -> send(msg));
+    Subscriber<Serializable> subscriber =
+        new SubscriberImpl<>(msg -> send(msg));
     subscribers.add(subscriber);
     publisher.subscribe(subscriber);
   }
@@ -40,7 +48,13 @@ public class Endpoint {
   }
 
   public void send(Serializable msg) {
-    session.getAsyncRemote().sendObject(msg);
+    try {
+      session.getAsyncRemote().sendBinary(
+          ByteBuffer.wrap(mapper.writeValueAsBytes(msg)));
+    } catch (JsonProcessingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   @OnClose

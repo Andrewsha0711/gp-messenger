@@ -1,13 +1,13 @@
-package ru.avogp.messenger.ui;
+package ru.avogp.messenger.components;
 
 import java.awt.GraphicsConfiguration;
 import java.awt.Rectangle;
 import java.util.function.Consumer;
 import javax.swing.JFrame;
 import ru.avogp.messenger.Service;
-import ru.avogp.messenger.ui.auth.AuthPanel;
-import ru.avogp.messenger.ui.auth.AuthService;
-import ru.avogp.messenger.ui.auth.AuthServiceImpl;
+import ru.avogp.messenger.components.auth.AuthPanel;
+import ru.avogp.messenger.components.auth.AuthService;
+import ru.avogp.messenger.components.auth.AuthServiceImpl;
 
 public class MainFrame extends JFrame {
   private MessengerLayout messengerLayout;

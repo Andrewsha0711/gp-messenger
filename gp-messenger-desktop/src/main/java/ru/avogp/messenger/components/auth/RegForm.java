@@ -1,4 +1,4 @@
-package ru.avogp.messenger.ui.auth;
+package ru.avogp.messenger.components.auth;
 
 import java.awt.Color;
 import java.util.Map;
@@ -11,7 +11,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.avogp.messenger.ui.auth.AuthService.User;
 
 public class RegForm extends JPanel {
   private JTextField usernameField;
@@ -52,9 +51,9 @@ public class RegForm extends JPanel {
     add(regButton);
 
     regButton.addActionListener(e -> {
-      User user = new User(usernameField.getText(),
+      // TODO: Temp solution, PASSWORD IN STRING POOL!!!
+      service.onRegister(usernameField.getText(),
           new String(passwordField.getPassword()));
-      service.onRegister(user);
     });
     setVisible(true);
   }
